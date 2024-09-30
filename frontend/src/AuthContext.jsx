@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import Loader from './components/Loader';
-import zIndex from '@mui/material/styles/zIndex';
 
 const AuthContext = createContext();
 
@@ -36,7 +34,7 @@ export const AuthProvider = ({ children }) => {
             setUser(response.data.user);
         } catch (error) {
             console.error('Login failed', error);
-            throw error; // Pass the error to the component calling login
+            throw error;
         } finally {
             setLoading(false);
         }
@@ -49,14 +47,18 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
         } catch (error) {
             console.error('Logout failed', error);
-            throw error; // Pass the error to the component calling logout
+            throw error; 
         } finally {
             setLoading(false);
         }
     };
 
+
+    const baseurl = "https://geo-attend-backend.vercel.app/";
+
     const value = {
         user,
+        baseurl,
         login,
         logout,
         loading,
