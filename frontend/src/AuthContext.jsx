@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
 
@@ -12,27 +13,36 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const baseurl = "https://geo-attend-backend.vercel.app";
 
+    const checkAuth = async () => {
+        try {
+            const response = await axios.get(`https://geo-attend-backend.vercel.app/`,{ withCredentials: true });
+            setUser(response.data.user);
+        } catch (error) {
+            console.error('User is not authenticated', error);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        
-        const checkAuth = async () => {
-            try {
-                const response = await axios.get(`${baseurl}`);
-                setUser(response.data.user);
-            } catch (error) {
-                console.error('User is not authenticated', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         checkAuth();
     }, []);
 
-    const login = async (credentials) => {
+    const login = async ({username,password}) => {
         setLoading(true);
+
+        const loginPromise = toast.promise(
+            axios.post(`${baseurl}/login`, {username,password}, { withCredentials: true }),
+            {
+                loading: 'Logging in...',
+                success: 'Logged in successfully!',
+                error: 'Login failed! Please try again.',
+            }
+        );
+
         try {
-            const response = await axios.post(`${baseurl}/login`, credentials);
-            setUser(response.data.user);
+            const response = await loginPromise;
+            await checkAuth();
+            // navigate(`${user.role}`)
         } catch (error) {
             console.error('Login failed', error);
             throw error;
@@ -48,7 +58,7 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
         } catch (error) {
             console.error('Logout failed', error);
-            throw error; 
+            throw error;
         } finally {
             setLoading(false);
         }
