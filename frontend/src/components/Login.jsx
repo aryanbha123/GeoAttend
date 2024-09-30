@@ -6,7 +6,7 @@ import { useAuth } from "../AuthContext";
 
 const LoginPage = () => {
 
-  const {baseurl} = useAuth();
+  const {baseurl , login} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const LoginPage = () => {
     setLoading(true);
 
     
-    const loginPromise = axios.post(`${baseurl}/api/login`, { email, password });
+    const loginPromise = login({ email, password });
 
     toast.promise(
       loginPromise,
