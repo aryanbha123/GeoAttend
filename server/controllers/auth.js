@@ -79,3 +79,12 @@ exports.logout = (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+
+
+// {
+//     "userId": "66fa87be716c7ce9a774248c",
+//     "latitude" :"30.342764",
+//     "longitude" : "77.888023",
+//     "checkinTime":"9:00 A.M"
+// }

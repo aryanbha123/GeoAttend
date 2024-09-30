@@ -8,19 +8,30 @@ function Attendance() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
-        const username = 'USER123';
+        console.log(latitude,longitude);
+        const userId = '66fa87be716c7ce9a774248c';
+        console.log(userId);
+        // {
+        //     "userId": "66fa87be716c7ce9a774248c",
+        //     "latitude" :"30.342764",
+        //     "longitude" : "77.888023",
+        //     "checkinTime":"9:00 A.M"
+        // }
 
         try {
-          const response = await axios.post('http://localhost:5000/mark-attendance', {
-            username,
-            latitude,
-            longitude,
+          const response = await axios.post('http://localhost:3000/mark-attendance', {
+            
+                userId: "66fa87be716c7ce9a774248c",
+                latitude :"30.342764",
+                longitude : "77.888023",
+                checkinTime:"9:00 A.M"
+            
           });
 
           if (response.data.success) {
             setStatus('Attendance marked successfully.');
           } else {
-            setStatus('Error: ' + response.data.error);
+            setStatus('Error: ' + response.data.message);
           }
         } catch (error) {
           setStatus('Failed to mark attendance.');

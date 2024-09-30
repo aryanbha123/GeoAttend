@@ -6,7 +6,6 @@ const authMiddleware = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized, please log in' });
     }
-
     try {
         const decoded = jwt.verify(token, "dfghjkcfgvh");
         req.user = decoded; 

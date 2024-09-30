@@ -1,21 +1,23 @@
 const express = require('express');
 const { isPointWithinRadius } = require('geolib');
-const Attendance = require('./models/Attendance');
-const app = express();
-app.use(express.json());
-app.use(require('cors')());
+const Attendance = require('../models/Attendance');
+const router = express.Router();
+const cors = require('cors');
 
+router.use(express.json());
+router.use(cors());
 
 const geofenceCenter = {
-  latitude: 28.7041,
-  longitude: 77.1025,
+  latitude: 30.342764,
+  longitude: 77.888023
 };
-const geofenceRadius = 500;
+const geofenceRadius = 500; 
 
-app.post('/mark-attendance', async (req, res) => {
-  const { userId, latitude, longitude } = req.body;
 
-  if (!userId || !latitude || !longitude) {
+router.post('/mark-attendance', async (req, res) => {
+  const { userId, latitude, longitude, checkinTime } = req.body;
+
+  if ( !userId || !latitude || !longitude || !checkinTime) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
@@ -26,24 +28,64 @@ app.post('/mark-attendance', async (req, res) => {
   );
 
   if (insideGeofence) {
-    const attendance = new Attendance({
-      userId,
-      coordinates: { latitude, longitude }
-    });
+    
+    const today = new Date().setHours(0, 0, 0, 0);
+    let attendance = await Attendance.findOne({ date: today });
+
+    if (!attendance) {
+     
+      attendance = new Attendance({
+        date: today,
+        data: [{ userId, status: 'present', checkin: checkinTime, checkout: null }],
+      });
+    } else {
+     
+      const existingEntry = attendance.data.find(entry => entry.userId === userId);
+      if (existingEntry) {
+        return res.status(400).json({ message: 'Attendance already marked for today.' });
+      }
+      attendance.data.push({ userId, status: 'present', checkin: checkinTime, checkout: null });
+    }
 
     try {
       await attendance.save();
       return res.json({ success: true, message: 'Attendance marked successfully!' });
     } catch (error) {
-      return res.status(500).json({ error: 'Failed to save attendance.' });
+      return res.status(500).json({message: 'Failed to save attendance.' });
     }
   } else {
-    return res.status(403).json({ error: 'You are not within the geofence area.' });
+    return res.status(403).json({ message: 'You are not within the geofence area.' });
   }
 });
 
+ 
+router.post('/mark-checkout', async (req, res) => {
+  const { userId, checkoutTime } = req.body;
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  if (!userId || !userId || !checkoutTime) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+
+  const today = new Date().setHours(0, 0, 0, 0); 
+
+  try {
+    const attendance = await Attendance.findOne({ date: today });
+
+    if (!attendance) {
+      return res.status(404).json({ error: 'No attendance record found for today.' });
+    }
+
+    const existingEntry = attendance.data.find(entry => entry.userId === userId);
+    if (!existingEntry) {
+      return res.status(404).json({ error: 'Attendance entry not found for user.' });
+    }
+
+    existingEntry.checkout = checkoutTime; // Update checkout time
+    await attendance.save();
+    return res.json({ success: true, message: 'Checkout marked successfully!' });
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to mark checkout.' });
+  }
 });
+
+module.exports = router;
