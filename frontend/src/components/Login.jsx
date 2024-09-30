@@ -12,39 +12,37 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
-    // e.preventDefault();
-    // setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
     
     const loginPromise = login({ username, password });
 
-    // toast.promise(
-    //   loginPromise,
-    //   {
-    //     loading: "Logging in...",
-    //     success: "Login successful! Redirecting...",
-    //     error: "Invalid username or password.",
-    //   },
-    //   {
-    //     duration: 4000,
-    //     style: {
-    //       borderRadius: "10px",
-    //       background: "#333",
-    //       color: "#fff",
-    //     },
-    //   }
-    // );
+    toast.promise(
+      loginPromise,
+      {
+        loading: "Logging in...",
+        success: "Login successful! Redirecting...",
+        error: "Invalid username or password.",
+      },
+      {
+        duration: 4000,
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      }
+    );
 
-    // try {
-    //   const response = await loginPromise;
-    //   // Handle successful login, e.g., navigate to another page
-    //   console.log(response.data);
-      
-    //   setLoading(false);
-    // } catch (error) {
-    //   setLoading(false);
-    //   console.error("Login failed:", error);
-    // }
+    try {
+      const response = await loginPromise;
+      console.log(response.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Login failed:", error);
+    }
   };
 
   return (
