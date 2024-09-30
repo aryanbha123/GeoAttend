@@ -8,7 +8,7 @@ const URI = "mongodb+srv://aryanbhandari4077:qHiT2RmS7y343QC7@cluster0.wqexvgn.m
 
 
 const corsOptions = {
-    origin: 'http://localhost:3001', // The origin of your frontend app
+    origin: 'https://geo-attend-client.vercel.app/', // The origin of your frontend app
     credentials: true, // Allow cookies and credentials to be sent
     optionsSuccessStatus: 200
 };
