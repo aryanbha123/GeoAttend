@@ -44,7 +44,7 @@ router.post('/mark-attendance', async (req, res) => {
 
       
       if (existingEntry) {
-        return res.status(400).json({success:true, message: 'Attendance already marked for today.' });
+        return res.status(200).json({success:true, message: 'Attendance already marked for today.' });
       }
       attendance.data.push({ userId, status: 'present', checkin: checkinTime, checkout: null });
     }
