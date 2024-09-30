@@ -40,9 +40,11 @@ router.post('/mark-attendance', async (req, res) => {
       });
     } else {
      
-      const existingEntry = attendance.data.find(entry => entry.userId === userId);
+      const existingEntry = attendance.data.find(entry => entry.userId.toString() === userId.toString());
+
+      
       if (existingEntry) {
-        return res.status(400).json({ message: 'Attendance already marked for today.' });
+        return res.status(400).json({success:true, message: 'Attendance already marked for today.' });
       }
       attendance.data.push({ userId, status: 'present', checkin: checkinTime, checkout: null });
     }
@@ -62,7 +64,7 @@ router.post('/mark-attendance', async (req, res) => {
 router.post('/mark-checkout', async (req, res) => {
   const { userId, checkoutTime } = req.body;
 
-  if (!userId || !userId || !checkoutTime) {
+  if (!userId || !checkoutTime) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
@@ -80,7 +82,7 @@ router.post('/mark-checkout', async (req, res) => {
       return res.status(404).json({ error: 'Attendance entry not found for user.' });
     }
 
-    existingEntry.checkout = checkoutTime; // Update checkout time
+    existingEntry.checkout = checkoutTime; 
     await attendance.save();
     return res.json({ success: true, message: 'Checkout marked successfully!' });
   } catch (error) {

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import { Toaster } from 'react-hot-toast';
 import ProtectRoute from './auth/ProtectedRoute'
+import Sidebar from './pages/employee/Sidebar';
 export default function App() {
   const Home = React.lazy(() => import('./pages/Home'));
   const AdminBoard = React.lazy(() => import('./pages/admin/Dashboard'));
@@ -15,16 +16,20 @@ export default function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/admin' element={<AdminBoard />} />
-            <Route element={<ProtectRoute requiredRole="Employee" />}>
-              <Route path="/Employee" element={<UserBoard></UserBoard>} />
+            <Route element={<ProtectRoute requiredRole="Admin" />}>
+              <Route path='/Admin' element={<AdminBoard />} />
             </Route>
+            {/* <Route element={<ProtectRoute requiredRole="Employee" />}> */}
+              <Route to='/aryan' element={<>Home</>} />
+            {/* </Route> */}
           </Routes>
         </Suspense>
       </AuthProvider>
     </BrowserRouter>
   );
 }
+
+
 
 // import React, { useState } from 'react';
 

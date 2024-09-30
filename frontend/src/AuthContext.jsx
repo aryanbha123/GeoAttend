@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await axios.get(`${BaseURL}`, { withCredentials: true });
             setUser(response.data.user);
+            console.log(user);
             <Navigate to={`/${response.data.role}`} />
         } catch (error) {
             console.error('User is not authenticated', error);
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await loginPromise;
             await checkAuth();
-            navigate(`${user.role}`)
+            navigate(`/${user.role}`)
         } catch (error) {
             console.error('Login failed', error);
             throw error;
