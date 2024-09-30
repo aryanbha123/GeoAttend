@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../../AuthContext';
 
 function Attendance() {
   const [status, setStatus] = useState('');
-
+    const {logout} = useAuth();
   const markAttendance = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
@@ -47,6 +48,8 @@ function Attendance() {
       <h1>Geofence Attendance System</h1>
       <button className='bg-black px-2 py-1 text-white shadow-md ' onClick={markAttendance}>Mark Attendance</button>
       {status && <p>{status}</p>}
+
+      <button onClick={logout} > Logout</button>
     </div>
   );
 }

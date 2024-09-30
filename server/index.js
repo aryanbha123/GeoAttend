@@ -23,16 +23,16 @@ const corsOptions = {
 };
 
 // Middleware setup
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cookieParser());
 app.use(require('./routes/auth'));
 app.use(require('./routes/userRoutes'));
 app.use(require('./routes/checkRoute'));
 
-app.get('/', (req, res) => {
-    res.send("Server Live");
-});
+// app.get('/', (req, res) => {
+//     res.send("Server Live");
+// });
 
 app.listen(port, () => {
     console.log("Server Running")

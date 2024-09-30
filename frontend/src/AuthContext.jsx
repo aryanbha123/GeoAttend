@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 const Loader = () => {
     return (
         <>
@@ -21,8 +21,9 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const checkAuth = async () => {
         try {
-            const response = await axios.get(`${BaseURL}/auth`, { withCredentials: true });
+            const response = await axios.get(`${BaseURL}`, { withCredentials: true });
             setUser(response.data.user);
+            <Navigate to={`/${response.data.role}`} />
         } catch (error) {
             console.error('User is not authenticated', error);
             setUser(null);
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
 
         const logoutPromise = toast.promise(
-            axios.post(`${BaseURL}/api/logout`, {}, { withCredentials: true }),
+            axios.post(`${BaseURL}/logout`, {}, { withCredentials: true }),
             {
                 loading: 'Logging out...',
                 success: 'Logged out successfully!',
