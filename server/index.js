@@ -5,9 +5,9 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const port = 3000;
 const URI = "mongodb+srv://aryanbhandari4077:qHiT2RmS7y343QC7@cluster0.wqexvgn.mongodb.net/geo?retryWrites=true&w=majority&appName=Cluster0"
+const path = require('path');
 
-
-const allowedOrigins = ['https://employee-geo-tracking.vercel.app'];
+const allowedOrigins = ['http://localhost:3001'];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -34,11 +34,26 @@ app.use(require('./routes/checkRoute'));
 //     res.send("Server Live");
 // });
 
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Dynamic route for serving images
+app.get('/uploads/:imageName', (req, res) => {
+  const imageName = req.params.imageName;
+  const imagePath = path.join(__dirname, 'uploads', imageName);
+
+  res.sendFile(imagePath, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(err.status).end();
+    }
+  });
+});
 app.listen(port, () => {
-    console.log("Server Running")
+  console.log("Server Running")
 })
 mongoose.connect(URI).then(() => {
-    console.log('Connected to MongoDB')
+  console.log('Connected to MongoDB')
 }).catch(err => console.log(err));
 
 

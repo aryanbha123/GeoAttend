@@ -11,7 +11,7 @@ const geofenceCenter = {
   latitude: 30.342764,
   longitude: 77.888023
 };
-const geofenceRadius = 500; 
+const geofenceRadius = 100000; 
 
 
 router.post('/mark-attendance', async (req, res) => {

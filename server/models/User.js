@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
+        unique: true,
     },
     email: {
         type: String,
@@ -19,7 +20,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
+    image: {
+        type: String, // Assuming you store a URL to the image
+        default: null,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
