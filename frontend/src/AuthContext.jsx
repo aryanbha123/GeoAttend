@@ -31,9 +31,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (credentials) => {
         setLoading(true);
         try {
-            const response = await axios.post(
-                `https://geo-attend-backend.vercel.app/login`,credentials                
-              );
+            const response = await axios.post(`https://geo-attend-backend.vercel.app/login`, credentials);
             setUser(response.data.user);
         } catch (error) {
             console.error('Login failed', error);

@@ -13,13 +13,17 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 
-app.use(cors(corsOptions));
+app.use(cors({
+    credentials: true, 
+    origin:"*"
+}));
 
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(require('./routes/auth'));
 app.use(require('./routes/userRoutes'));
+app.us
 app.get('/', (req, res) => {
     res.send("Server Live");
 });

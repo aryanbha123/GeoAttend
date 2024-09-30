@@ -7,7 +7,7 @@ import { useAuth } from "../AuthContext";
 const LoginPage = () => {
 
   const {baseurl , login} = useAuth();
-  const [username, setusername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -16,14 +16,14 @@ const LoginPage = () => {
     setLoading(true);
 
     
-    const loginPromise = login({ username, password });
+    const loginPromise = login({ email, password });
 
     toast.promise(
       loginPromise,
       {
         loading: "Logging in...",
         success: "Login successful! Redirecting...",
-        error: "Invalid username or password.",
+        error: "Invalid email or password.",
       },
       {
         duration: 4000,
@@ -37,7 +37,9 @@ const LoginPage = () => {
 
     try {
       const response = await loginPromise;
+      // Handle successful login, e.g., navigate to another page
       console.log(response.data);
+      
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -59,12 +61,12 @@ const LoginPage = () => {
         </Typography>
         <form onSubmit={handleLogin} style={{ width: "100%" }}>
           <TextField
-            label="username"
+            label="Email"
             variant="outlined"
             fullWidth
             margin="normal"
-            value={username}
-            onChange={(e) => setusername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <TextField
