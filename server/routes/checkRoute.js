@@ -8,10 +8,10 @@ router.use(express.json());
 router.use(cors());
 
 const geofenceCenter = {
-  latitude: 27.3429763,
-  longitude: 78.8866964
+  latitude: 27.140,
+  longitude: 78.030
 };
-const geofenceRadius = 100000;
+const geofenceRadius = 1000;
 
 
 router.post('/mark-attendance', async (req, res) => {
