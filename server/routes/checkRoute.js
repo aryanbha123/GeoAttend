@@ -8,8 +8,8 @@ router.use(express.json());
 router.use(cors());
 
 const geofenceCenter = {
-  latitude: 27.012,
-  longitude: 78.88
+  latitude: 30.012,
+  longitude: 77.88
 };
 const geofenceRadius = 300000;
 
@@ -20,6 +20,7 @@ router.post('/mark-attendance', async (req, res) => {
   if (!userId || !latitude || !longitude || !checkinTime) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
+
 
   const insideGeofence = isPointWithinRadius(
     { latitude, longitude },
