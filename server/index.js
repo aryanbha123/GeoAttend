@@ -37,7 +37,6 @@ app.use(require('./routes/getAttendance'))
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Dynamic route for serving images
 app.get('/uploads/:imageName', (req, res) => {
   const imageName = req.params.imageName;
   const imagePath = path.join(__dirname, 'uploads', imageName);
@@ -49,6 +48,7 @@ app.get('/uploads/:imageName', (req, res) => {
     }
   });
 });
+
 app.listen(port, () => {
   console.log("Server Running")
 })
