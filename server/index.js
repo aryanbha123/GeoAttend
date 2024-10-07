@@ -49,6 +49,10 @@ app.get('/uploads/:imageName', (req, res) => {
   });
 });
 
+app.get('/:id',(req,res)=>{
+  const id = req.params.id;
+  
+})
 app.listen(port, () => {
   console.log("Server Running")
 })
