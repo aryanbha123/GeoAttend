@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const port = 3000;
-const URI = "mongodb+srv://aryanbhandari4077:qHiT2RmS7y343QC7@cluster0.wqexvgn.mongodb.net/geo?retryWrites=true&w=majority&appName=Cluster0"
+// const URI = "mongodb+srv://aryanbhandari4077:qHiT2RmS7y343QC7@cluster0.wqexvgn.mongodb.net/geo?retryWrites=true&w=majority&appName=Cluster0"
+// const URI = "mongodb+srv://tonsvalleyeducationtrustorg:tI9MbnL0xrVtketb@cluster0.ym6ob.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const URI = "mongodb+srv://tonsvalleyeducationtrustorg:tI9MbnL0xrVtketb@cluster0.ym6ob.mongodb.net/"
+
 const path = require('path');
 
 const allowedOrigins = ['http://localhost:3001'];
